@@ -25,6 +25,17 @@ func rob(nums []int) int {
 	return tmp[len(tmp)-1]
 }
 
+// 213. 打家劫舍 II
+func rob2(nums []int) int {
+	return max(rob(nums[0:len(nums)-1]), rob(nums[1:]))
+}
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
 func max(a, b int) int {
 	if a > b {
 		return a
