@@ -35,3 +35,36 @@ func max(a, b int) int {
 	}
 	return b
 }
+
+// s = "aabcabcab", maxLetters = 2, minSize = 2, maxSize = 3
+// 3
+func maxFreq(s string, maxLetters int, minSize int, maxSize int) int {
+	l, r := 0, 0
+	letters := map[uint8]int{}
+	cnt := map[string]int{}
+	for r < len(s) {
+		// 初始化窗口
+		if r-l < minSize-1 {
+			letters[s[r]] = letters[s[r]] + 1
+			r++
+			continue
+		}
+		letters[s[r]] = letters[s[r]] + 1
+		if len(letters) <= maxLetters {
+			cnt[s[l:r+1]] = cnt[s[l:r+1]] + 1
+		}
+		r++
+		letters[s[l]] = letters[s[l]] - 1
+		if letters[s[l]] == 0 {
+			delete(letters, s[l])
+		}
+		l++
+	}
+	var ans int
+	for _, v := range cnt {
+		if v > ans {
+			ans = v
+		}
+	}
+	return ans
+}
