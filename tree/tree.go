@@ -95,3 +95,44 @@ func levelOrder(root *TreeNode) [][]int {
 	}
 	return ans
 }
+
+func zigzagLevelOrder(root *TreeNode) [][]int {
+	if root == nil {
+		return nil
+	}
+	queue := append([]*TreeNode(nil), root)
+	var (
+		ans     [][]int
+		next    []*TreeNode
+		tmp     []int
+		reverse bool
+	)
+
+	for len(queue) > 0 {
+		first := queue[0]
+		queue = queue[1:]
+		tmp = append(tmp, first.Val)
+		if first.Left != nil {
+			next = append(next, first.Left)
+		}
+		if first.Right != nil {
+			next = append(next, first.Right)
+		}
+		if len(queue) == 0 {
+			if reverse {
+				var t []int
+				for i := len(tmp) - 1; i >= 0; i-- {
+					t = append(t, tmp[i])
+				}
+				ans = append(ans, t)
+			} else {
+				ans = append(ans, tmp)
+			}
+			tmp = []int{}
+			reverse = !reverse
+			queue = append(queue, next...)
+			next = []*TreeNode{}
+		}
+	}
+	return ans
+}
