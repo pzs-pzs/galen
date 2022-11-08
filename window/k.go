@@ -80,7 +80,7 @@ func numOfSubarrays(arr []int, k int, threshold int) int {
 			continue
 		}
 		sum += arr[r]
-		if (float64(sum) / float64(k)) >= float64(threshold) {
+		if sum >= threshold*k {
 			ans++
 		}
 		r++
