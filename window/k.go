@@ -68,3 +68,24 @@ func maxFreq(s string, maxLetters int, minSize int, maxSize int) int {
 	}
 	return ans
 }
+
+func numOfSubarrays(arr []int, k int, threshold int) int {
+	var sum int
+	l, r := 0, 0
+	var ans int
+	for r < len(arr) {
+		if r-l < k-1 {
+			sum += arr[r]
+			r++
+			continue
+		}
+		sum += arr[r]
+		if (float64(sum) / float64(k)) >= float64(threshold) {
+			ans++
+		}
+		r++
+		sum -= arr[l]
+		l++
+	}
+	return ans
+}
