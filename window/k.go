@@ -103,3 +103,21 @@ func numberOfSubstrings(s string) int {
 	}
 	return ans
 }
+
+func maxScore(cardPoints []int, k int) int {
+	s := len(cardPoints) + k - 1
+	l, r := len(cardPoints)-k, len(cardPoints)-k
+	tmp := append(cardPoints, cardPoints...)
+	var ans int
+	var sum int
+	for r <= s {
+		sum += tmp[r]
+		if r-l == k-1 {
+			ans = max(ans, sum)
+			sum -= tmp[l]
+			l++
+		}
+		r++
+	}
+	return ans
+}

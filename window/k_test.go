@@ -23,3 +23,8 @@ func Test_numberOfSubstrings(t *testing.T) {
 	ans := numberOfSubstrings("abcabc")
 	println(ans)
 }
+
+func Test_maxScore(t *testing.T) {
+	score := maxScore([]int{96, 90, 41, 82, 39, 74, 64, 50, 30}, 8)
+	println(score)
+}
