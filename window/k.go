@@ -89,3 +89,17 @@ func numOfSubarrays(arr []int, k int, threshold int) int {
 	}
 	return ans
 }
+
+func numberOfSubstrings(s string) int {
+	var ans int
+	l, r := 0, 0
+	cnt := map[uint8]int{}
+	for ; r < len(s); r++ {
+		cnt[s[r]] = cnt[s[r]] + 1
+		for ; cnt['a'] > 0 && cnt['b'] > 0 && cnt['c'] > 0; l++ {
+			ans += len(s) - r
+			cnt[s[l]] = cnt[s[l]] - 1
+		}
+	}
+	return ans
+}

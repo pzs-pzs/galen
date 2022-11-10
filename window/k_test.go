@@ -18,3 +18,8 @@ func Test_numOfSubarrays(t *testing.T) {
 	ans = numOfSubarrays([]int{11, 13, 17, 23, 29, 31, 7, 5, 2, 3}, 3, 5)
 	println(ans)
 }
+
+func Test_numberOfSubstrings(t *testing.T) {
+	ans := numberOfSubstrings("abcabc")
+	println(ans)
+}
