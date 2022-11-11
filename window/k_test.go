@@ -28,3 +28,8 @@ func Test_maxScore(t *testing.T) {
 	score := maxScore([]int{96, 90, 41, 82, 39, 74, 64, 50, 30}, 8)
 	println(score)
 }
+
+func Test_maxVowels(t *testing.T) {
+	ans := maxVowels("abciiidef", 3)
+	println(ans)
+}

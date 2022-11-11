@@ -121,3 +121,26 @@ func maxScore(cardPoints []int, k int) int {
 	}
 	return ans
 }
+
+func maxVowels(s string, k int) int {
+	l, r := 0, 0
+	var ans, cnt int
+	for r < len(s) {
+		if is(s[r]) {
+			cnt++
+		}
+		if r-l == k-1 {
+			ans = max(ans, cnt)
+			if is(s[l]) {
+				cnt--
+			}
+			l++
+		}
+		r++
+	}
+	return ans
+}
+func is(c uint8) bool {
+	return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'
+
+}
