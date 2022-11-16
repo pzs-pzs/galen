@@ -33,3 +33,7 @@ func Test_maxVowels(t *testing.T) {
 	ans := maxVowels("abciiidef", 3)
 	println(ans)
 }
+
+func Test_minSumOfLengths(t *testing.T) {
+	minSumOfLengths([]int{3, 2, 2, 4, 3}, 3)
+}

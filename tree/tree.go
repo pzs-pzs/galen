@@ -1,6 +1,9 @@
 package tree
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 type TreeNode struct {
 	Val   int
@@ -132,6 +135,63 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
 			reverse = !reverse
 			queue = append(queue, next...)
 			next = []*TreeNode{}
+		}
+	}
+	return ans
+}
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func minimumOperations(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	var ans int
+	q := append([]*TreeNode(nil), root)
+	var tmp []*TreeNode
+	for len(q) > 0 {
+		first := q[0]
+		if first.Left != nil {
+			tmp = append(tmp, first.Left)
+		}
+		if first.Right != nil {
+			tmp = append(tmp, first.Right)
+		}
+		q = q[1:]
+		if len(q) == 0 {
+			q = append(q, tmp...)
+			ans += operationsCnt(tmp)
+			tmp = []*TreeNode{}
+		}
+	}
+	return ans
+}
+
+func operationsCnt(nums []*TreeNode) int {
+	tmp := append([]*TreeNode(nil), nums...)
+	sort.Slice(nums, func(i, j int) bool {
+		return nums[i].Val < nums[j].Val
+	})
+	indexMap := map[int]int{}
+	for i, v := range nums {
+		indexMap[v.Val] = i
+	}
+	var ans int
+	for i := 0; i < len(tmp); i++ {
+		for {
+			idx := indexMap[tmp[i].Val]
+			if idx != i {
+				ans++
+				tmp[i], tmp[idx] = tmp[idx], tmp[i]
+			} else {
+				break
+			}
 		}
 	}
 	return ans

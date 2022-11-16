@@ -142,5 +142,4 @@ func maxVowels(s string, k int) int {
 }
 func is(c uint8) bool {
 	return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'
-
 }
