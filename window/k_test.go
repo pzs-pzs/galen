@@ -31,9 +31,14 @@ func Test_maxScore(t *testing.T) {
 
 func Test_maxVowels(t *testing.T) {
 	ans := maxVowels("abciiidef", 3)
+
 	println(ans)
 }
 
 func Test_minSumOfLengths(t *testing.T) {
-	minSumOfLengths([]int{3, 2, 2, 4, 3}, 3)
+	//minSumOfLengths([]int{3, 2, 2, 4, 3}, 3)
+}
+
+func Test_numSubarrayBoundedMax(t *testing.T) {
+	println(numSubarrayBoundedMax([]int{2, 9, 2, 5, 6}, 2, 8))
 }

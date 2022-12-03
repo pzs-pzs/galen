@@ -1,6 +1,9 @@
 package doublepointer
 
-import "sort"
+import (
+	"math"
+	"sort"
+)
 
 func twoSum(nums []int, target int) []int {
 	index := make(map[int]int)
@@ -165,6 +168,202 @@ func topKFrequent(nums []int, k int) []int {
 	var ans []int
 	for i := 0; i < k; i++ {
 		ans = append(ans, s[i][1])
+	}
+	return ans
+}
+
+func sumSubseqWidths(nums []int) int {
+	sort.Ints(nums)
+	var ans int
+	for i := 1; i < 1<<len(nums); i++ {
+		a, b := -1, math.MaxInt
+		for j := 0; j < len(nums); j++ {
+			if i>>j&1 > 0 {
+				a = max(a, nums[j])
+				b = min(b, nums[j])
+			}
+		}
+		ans = (ans + (a - b)) % (1e9 + 7)
+	}
+	return ans
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func numDistinct(s string, t string) int {
+	var ans int
+
+	return ans
+}
+
+func unequalTriplets(nums []int) int {
+	var ans int
+	for i := 0; i < len(nums); i++ {
+		for j := i + 1; j < len(nums); j++ {
+			for z := j + 1; z < len(nums); z++ {
+				if nums[i] != nums[j] && nums[j] != nums[z] && nums[i] != nums[z] {
+					ans++
+				}
+			}
+		}
+	}
+	return ans
+}
+
+func expand(s, t string) bool {
+	n, m := len(s), len(t)
+	i, j := 0, 0
+	for i < n && j < m {
+		if s[i] != t[j] {
+			return false
+		}
+		ch := s[i]
+		cntI := 0
+		for i < n && s[i] == ch {
+			cntI++
+			i++
+		}
+		cntJ := 0
+		for j < m && t[j] == ch {
+			cntJ++
+			j++
+		}
+		if cntI < cntJ || cntI > cntJ && cntI < 3 {
+			return false
+		}
+	}
+	return i == n && j == m
+}
+
+func expressiveWords(s string, words []string) (ans int) {
+	for _, word := range words {
+		if expand(s, word) {
+			ans++
+		}
+	}
+	return
+}
+
+func pivotInteger(n int) int {
+	p, s := make([]int, n), make([]int, n)
+	p[0] = 1
+	s[n-1] = n
+	for i := 2; i <= n; i++ {
+		p[i-1] = p[i-2] + i
+	}
+	for i := n - 1; i >= 1; i-- {
+		s[i-1] = s[i] + i
+	}
+	for i := 1; i <= n; i++ {
+		if p[i-1] == s[i-1] {
+			return i
+		}
+	}
+	return -1
+}
+
+func appendCharacters(s string, t string) int {
+	l, r := 0, 0
+
+	for l < len(s) && r < len(t) {
+		if s[l] == t[r] {
+			l++
+			r++
+			continue
+		}
+		l++
+	}
+	if r == len(t) {
+		return 0
+	}
+	return len(t) - r
+}
+
+func removeNodes(head *ListNode) *ListNode {
+	var stack []*ListNode
+	n := head
+	for n != nil {
+		for len(stack) > 0 {
+			top := stack[len(stack)-1]
+			if top.Val > n.Val {
+				break
+			}
+			stack = stack[:len(stack)-1]
+		}
+		stack = append(stack, n)
+		n = n.Next
+	}
+	head = stack[0]
+	stack[len(stack)-1].Next = nil
+	for i := range stack {
+		if i == 0 {
+			continue
+		}
+		stack[i-1].Next = stack[i]
+	}
+	return head
+}
+
+func check(nums []int) bool {
+	i := 1
+	for ; i < len(nums); i++ {
+		if nums[i-1] > nums[i] {
+			break
+		}
+	}
+	if i == len(nums) {
+		return true
+	}
+	for ; i < len(nums)-1; i++ {
+		if nums[i] > nums[i+1] {
+			return false
+		}
+	}
+	return nums[0] >= nums[len(nums)-1]
+}
+
+func countSubarrays(nums []int, k int) int {
+	var ans int
+	for i, num := range nums {
+		if num != k {
+			continue
+		}
+		ans++
+		// 偶数
+		l, r := i, i+1
+		for l >= 0 && r <= len(nums)-1 {
+			if nums[l] <= k && nums[r] > k {
+				ans++
+				l--
+				r++
+				continue
+			}
+			break
+		}
+		// 奇数
+		l, r = i-1, i+1
+		for l >= 0 && r <= len(nums)-1 {
+			if nums[l] < k && nums[r] > k {
+				ans++
+				l--
+				r++
+				continue
+			}
+			break
+		}
+
 	}
 	return ans
 }

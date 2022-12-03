@@ -143,3 +143,30 @@ func maxVowels(s string, k int) int {
 func is(c uint8) bool {
 	return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'
 }
+
+func numSubarrayBoundedMax(nums []int, left int, right int) int {
+	l, r := -1, 0
+	cnt := map[int]int{}
+	var ans int
+	for r < len(nums) {
+		if nums[r] >= left && nums[r] <= right {
+			cnt[nums[r]]++
+		} else {
+
+		}
+		for l < r && nums[r] >= left && nums[r] <= right {
+			if len(cnt) > 0 {
+				ans++
+			}
+			l++
+			if nums[l] >= left && nums[l] <= right {
+				cnt[nums[l]]--
+				if cnt[nums[l]] == 0 {
+					delete(cnt, nums[l])
+				}
+			}
+		}
+		r++
+	}
+	return ans
+}

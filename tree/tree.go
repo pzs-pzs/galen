@@ -196,3 +196,42 @@ func operationsCnt(nums []*TreeNode) int {
 	}
 	return ans
 }
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func closestNodes(root *TreeNode, queries []int) [][]int {
+	if root == nil {
+		return nil
+	}
+	var tmp []int
+	var dfs func(root *TreeNode)
+	dfs = func(root *TreeNode) {
+		if root == nil {
+			return
+		}
+		dfs(root.Left)
+		tmp = append(tmp, root.Val)
+		dfs(root.Right)
+	}
+	dfs(root)
+	ans := make([][]int, len(queries))
+	for index, q := range queries {
+		b := []int{-1, -1}
+		i := sort.SearchInts(tmp, q+1) - 1
+		if i >= 0 {
+			b[0] = tmp[i]
+		}
+		i = sort.SearchInts(tmp, q)
+		if i < len(tmp) {
+			b[1] = tmp[i]
+		}
+		ans[index] = b
+	}
+	return ans
+}
