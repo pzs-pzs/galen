@@ -2,7 +2,9 @@ package merge
 
 import (
 	"container/list"
+	"math"
 	"sort"
+	"strings"
 )
 
 func merge(intervals [][]int) [][]int {
@@ -158,4 +160,75 @@ func (r *RangeModule) RemoveRange(left int, right int) {
 		}
 	}
 
+}
+
+func isCircularSentence(sentence string) bool {
+	words := strings.Split(sentence, " ")
+	for i := 0; i < len(words)-1; i++ {
+		c := words[i]
+		n := words[i+1]
+		if c[len(c)-1] != n[0] {
+			return false
+		}
+	}
+	last := words[len(words)-1]
+	first := words[0]
+	return last[len(last)-1] == first[0]
+}
+
+func dividePlayers(skill []int) int64 {
+	var sum int
+	cache := map[int]int{}
+	for _, s := range skill {
+		sum += s
+		cache[s]++
+	}
+	avg := sum / (len(skill) >> 1)
+	var rst int
+	for _, s := range skill {
+		if cache[s] > 0 {
+			v, ok := cache[avg-s]
+			if !ok {
+				return -1
+			}
+			if v <= 0 {
+				return -1
+			}
+			rst += (avg - s) * s
+			cache[avg-s]--
+			cache[s]--
+		}
+	}
+	return int64(rst)
+}
+
+func minScore(n int, roads [][]int) int {
+	type edge struct{ to, d int }
+	g := make([][]edge, n)
+	for _, e := range roads {
+		x, y, d := e[0]-1, e[1]-1, e[2]
+		g[x] = append(g[x], edge{y, d})
+		g[y] = append(g[y], edge{x, d})
+	}
+	ans := math.MaxInt32
+	vis := make([]bool, n)
+	var dfs func(int)
+	dfs = func(x int) {
+		vis[x] = true
+		for _, e := range g[x] {
+			ans = min(ans, e.d)
+			if !vis[e.to] {
+				dfs(e.to)
+			}
+		}
+	}
+	dfs(0)
+	return ans
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }

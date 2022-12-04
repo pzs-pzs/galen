@@ -94,3 +94,7 @@ func TestEmptySlice(t *testing.T) {
 	println((*reflect.SliceHeader)(unsafe.Pointer(d)).Len)
 	println((*reflect.SliceHeader)(unsafe.Pointer(d)).Cap)
 }
+
+func Test_dividePlayers(t *testing.T) {
+	println(dividePlayers([]int{3, 2, 5, 1, 3, 4}))
+}
