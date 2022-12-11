@@ -367,3 +367,79 @@ func countSubarrays(nums []int, k int) int {
 	}
 	return ans
 }
+
+type Allocator struct {
+	mem   []int
+	index int
+}
+
+func Constructor(n int) Allocator {
+	return Allocator{
+		mem:   make([]int, n),
+		index: 0,
+	}
+}
+
+func (a *Allocator) Allocate(size int, mID int) int {
+	for i := 0; i < len(a.mem); i++ {
+		if a.mem[i] != 0 {
+			continue
+		}
+		end := i
+		for ; end < len(a.mem); end++ {
+			if a.mem[end] != 0 {
+				break
+			}
+		}
+		if size <= end-i+1 {
+			for s := i; s < i+size; s++ {
+				a.mem[s] = mID
+			}
+			return i
+		}
+	}
+	return -1
+}
+
+func (a *Allocator) Free(mID int) int {
+	var cnt int
+	for i := 0; i < len(a.mem); i++ {
+		if a.mem[i] == mID {
+			a.mem[i] = 0
+			cnt++
+		}
+	}
+	return cnt
+}
+
+func maxPoints(grid [][]int, queries []int) []int {
+	m, n := len(grid), len(grid[0])
+	dirs := [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+	var dfs func(i, j, q int, ans []int, index int, visited [][]bool)
+	dfs = func(i, j, q int, ans []int, index int, visited [][]bool) {
+		if i < 0 || i > m-1 || j < 0 || j > n-1 {
+			return
+		}
+		if visited[i][j] {
+			return
+		}
+		if grid[i][j] >= q {
+			return
+		}
+		ans[index]++
+		visited[i][j] = true
+		for _, d := range dirs {
+			dfs(i+d[0], j+d[1], q, ans, index, visited)
+		}
+	}
+	ans := make([]int, len(queries))
+	for i, q := range queries {
+		visited := make([][]bool, len(grid))
+		for i := range visited {
+			visited[i] = make([]bool, len(grid[0]))
+		}
+		dfs(0, 0, q, ans, i, visited)
+	}
+	return ans
+
+}

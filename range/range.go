@@ -232,3 +232,84 @@ func min(a, b int) int {
 	}
 	return b
 }
+
+func numDifferentIntegers(word string) int {
+	ans := map[string]int{}
+	for i := 0; i < len(word); {
+		if !digit(word[i]) {
+			i++
+			continue
+		}
+		s := i
+		for ; s < len(word); s++ {
+			if word[s] != '0' {
+				break
+			}
+		}
+
+		j := i
+		for ; j < len(word); j++ {
+			if !digit(word[j]) {
+				break
+			}
+		}
+		ans[word[s:j]]++
+		i = j
+		continue
+	}
+	return len(ans)
+}
+
+func digit(b byte) bool {
+	return b >= '0' && b <= '9'
+}
+
+func deleteGreatestValue(grid [][]int) int {
+	for _, g := range grid {
+		sort.Slice(g, func(i, j int) bool {
+			return g[i] < g[j]
+		})
+	}
+	var ans int
+	for j := 0; j < len(grid[0]); j++ {
+		m := -1
+		for i := 0; i < len(grid); i++ {
+			m = max(m, grid[i][j])
+		}
+		ans += m
+	}
+	return ans
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func longestSquareStreak(nums []int) int {
+	cache := map[int]bool{}
+	for _, num := range nums {
+		cache[num] = true
+	}
+	sort.Slice(nums, func(i, j int) bool {
+		return nums[i] < nums[j]
+	})
+	ans := -1
+	for _, num := range nums {
+		cnt := 0
+		for true {
+			if !cache[num] {
+				break
+			}
+			num = num * num
+			cnt++
+		}
+		if cnt >= 2 {
+			ans = max(ans, cnt)
+		}
+
+	}
+	return ans
+}

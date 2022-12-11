@@ -98,3 +98,17 @@ func TestEmptySlice(t *testing.T) {
 func Test_dividePlayers(t *testing.T) {
 	println(dividePlayers([]int{3, 2, 5, 1, 3, 4}))
 }
+
+func Test_numDifferentIntegers(t *testing.T) {
+	println(numDifferentIntegers("000000a0"))
+}
+
+func Test_deleteGreatestValue(t *testing.T) {
+	deleteGreatestValue([][]int{
+		{1, 2, 4}, {3, 3, 1},
+	})
+}
+
+func Test_longestSquareStreak(t *testing.T) {
+	longestSquareStreak([]int{4, 3, 6, 16, 8, 2})
+}

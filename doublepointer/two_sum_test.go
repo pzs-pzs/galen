@@ -99,3 +99,24 @@ func Test_check(t *testing.T) {
 func Test_countSubarrays(t *testing.T) {
 	println(countSubarrays([]int{2, 5, 1, 4, 3, 6}, 1))
 }
+
+func TestAllocator_Allocate(t *testing.T) {
+	// [1,1],[1,2],[1,3],[2],[3,4],[1,1],[1,1],[1],[10,2],[7]
+	m := Constructor(10)
+	println(m.Allocate(1, 1))
+	println(m.Allocate(1, 2))
+	println(m.Allocate(1, 3))
+	println(m.Free(2))
+	println(m.Allocate(3, 4))
+	println(m.Allocate(1, 1))
+	println(m.Allocate(1, 1))
+	println(m.Free(1))
+	println(m.Allocate(10, 2))
+	println(m.Free(7))
+}
+
+func Test_maxPoints(t *testing.T) {
+	a := [][]int{{1, 2, 3}, {2, 5, 7}, {3, 5, 1}}
+	b := []int{5, 6, 2}
+	maxPoints(a, b)
+}
