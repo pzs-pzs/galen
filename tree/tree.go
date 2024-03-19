@@ -235,3 +235,63 @@ func closestNodes(root *TreeNode, queries []int) [][]int {
 	}
 	return ans
 }
+
+type Node struct {
+	Val   int
+	Left  *Node
+	Right *Node
+	Next  *Node
+}
+
+func connect(root *Node) *Node {
+	if root == nil {
+		return nil
+	}
+	q := []*Node{root}
+	for len(q) > 0 {
+		tmp := q
+		q = nil
+		for i, node := range tmp {
+			if i+1 < len(tmp) {
+				node.Next = tmp[i+1]
+			}
+			if node.Left != nil {
+				q = append(q, node.Left)
+			}
+			if node.Right != nil {
+				q = append(q, node.Right)
+			}
+		}
+	}
+	return root
+}
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+func reverseList(head *ListNode) *ListNode {
+	var pre *ListNode
+	cur := head
+	if cur != nil {
+		next := cur.Next
+		cur.Next = pre
+		pre = cur
+		cur = next
+	}
+	return pre
+}
+
+func findKOr(nums []int, k int) (ans int) {
+	for i := 0; i < 31; i++ {
+		cnt1 := 0
+		for _, x := range nums {
+			cnt1 += x >> i & 1
+		}
+		if cnt1 >= k {
+			ans |= 1 << i
+		}
+	}
+	return
+}

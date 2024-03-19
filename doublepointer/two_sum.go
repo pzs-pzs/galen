@@ -3,6 +3,7 @@ package doublepointer
 import (
 	"math"
 	"sort"
+	"strings"
 )
 
 func twoSum(nums []int, target int) []int {
@@ -442,4 +443,179 @@ func maxPoints(grid [][]int, queries []int) []int {
 	}
 	return ans
 
+}
+
+func beautySum(s string) (ans int) {
+	for i := range s {
+		cnt := [26]int{}
+		for j := i; j < len(s); j++ {
+			cnt[s[j]-'a']++
+			minFreq := len(s)
+			maxFreq := 0
+			for _, c := range cnt {
+				if c > 0 {
+					minFreq = min(minFreq, c)
+				}
+				maxFreq = max(maxFreq, c)
+			}
+			ans += maxFreq - minFreq
+		}
+	}
+	return
+}
+
+func similarPairs(words []string) int {
+	var ans int
+	for i := 0; i < len(words); i++ {
+		for j := i + 1; j < len(words); j++ {
+			if is(words[i], words[j]) {
+				ans++
+			}
+		}
+	}
+	return ans
+}
+
+func is(s1, s2 string) bool {
+	a := make([]int, 26)
+	for _, v := range s1 {
+		a[v-'a'] = 1
+	}
+	b := make([]int, 26)
+	for _, v := range s2 {
+		b[v-'a'] = 1
+	}
+	for i := 0; i < 26; i++ {
+		if a[i] != b[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func smallestValue(n int) int {
+	for {
+		x, s := n, 0
+		for i := 2; i*i <= x; i++ {
+			for ; x%i == 0; x /= i {
+				s += i
+			}
+		}
+		if x > 1 {
+			s += x
+		}
+		if s == n {
+			return n
+		}
+		n = s
+	}
+}
+
+func validPath(n int, edges [][]int, source int, destination int) bool {
+	var ans bool
+	e := make([][]int, n)
+	for _, edge := range edges {
+		start, end := edge[0], edge[1]
+		e[start] = append(e[start], end)
+		e[end] = append(e[end], start)
+	}
+	visited := make([]bool, n)
+	var dfs func(s int)
+	dfs = func(p int) {
+		visited[p] = true
+		if p == destination {
+			ans = true
+			return
+		}
+		for _, c := range e[p] {
+			if visited[c] {
+				continue
+			}
+			dfs(c)
+		}
+	}
+	dfs(source)
+	return ans
+}
+
+func maximumScore(a int, b int, c int) int {
+	var ans int
+	rec := []int{a, b, c}
+	sort.Slice(rec, func(i, j int) bool {
+		return rec[i] < rec[j]
+	})
+	for !(rec[0] == 0 && rec[1] == 0) {
+		ans++
+		rec[1]--
+		rec[2]--
+		sort.Slice(rec, func(i, j int) bool {
+			return rec[i] < rec[j]
+		})
+	}
+	return ans
+}
+
+func finalValueAfterOperations(operations []string) int {
+	var ans int
+	for _, operation := range operations {
+		if strings.Contains(operation, "++") {
+			ans++
+			continue
+		}
+		ans--
+	}
+	return ans
+}
+
+func minimumMoves(s string) int {
+	var ans int
+	for i := 0; i < len(s); {
+		if s[i] == 'X' {
+			i += 3
+			ans++
+			continue
+		}
+		i++
+	}
+	return ans
+}
+
+func closetTarget(words []string, target string, startIndex int) int {
+	ans := len(words)
+	for i, word := range words {
+		if word == target {
+			t := min(abs(startIndex-i), len(words)-abs(startIndex-i))
+			ans = min(t, ans)
+		}
+	}
+	if ans == len(words) {
+		return -1
+	}
+	return ans
+}
+
+func abs(a int) int {
+	if a < 0 {
+		return -a
+	}
+	return a
+}
+
+func takeCharacters(s string, k int) int {
+	s = s + s
+	t := len(s)
+	for i := len(s)/2 - 1; i >= 0; i-- {
+		ans := make([]int, 3, 3)
+		for j := i; j < len(s) && j-i < len(s)/2; j++ {
+			ans[s[j]-'a']++
+			if ans[0] >= k && ans[1] >= k && ans[2] >= k {
+				t = min(t, j-i+1)
+				break
+			}
+		}
+	}
+	if t == len(s) {
+		return 0
+	}
+	return t
 }

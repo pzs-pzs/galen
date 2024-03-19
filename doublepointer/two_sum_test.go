@@ -120,3 +120,25 @@ func Test_maxPoints(t *testing.T) {
 	b := []int{5, 6, 2}
 	maxPoints(a, b)
 }
+
+func Test_beautySum(t *testing.T) {
+	println(beautySum("aabcb"))
+}
+
+func Test_smallestValue(t *testing.T) {
+	smallestValue(5)
+}
+
+func Test_minimumMoves(t *testing.T) {
+	minimumMoves("XXOX")
+}
+
+func Test_closetTarget(t *testing.T) {
+	a := closetTarget([]string{"hsdqinnoha", "mqhskgeqzr", "zemkwvqrww", "zemkwvqrww", "daljcrktje", "fghofclnwp", "djwdworyka", "cxfpybanhd", "fghofclnwp", "fghofclnwp"}, "zemkwvqrww", 8)
+	println(a)
+}
+
+func Test_takeCharacters(t *testing.T) {
+	ans := takeCharacters("a", 0)
+	println(ans)
+}
