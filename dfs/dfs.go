@@ -344,23 +344,46 @@ func maximumLength(nums []int) int {
 }
 
 func flowerGame(n int, m int) int64 {
-	if n <= 1 && m <= 1 {
-		return 0
+	return int64(((n+1)/2)*(m/2) + (n/2)*((m+1)/2))
+}
+
+//func minimumPushes(word string) int {
+//	k := len(word) / 8
+//	return (k+1)*k/2*8 + len(word)%8*(k+1)
+//}
+
+func countOfPairs(n int, x int, y int) []int {
+	var rst []int = make([]int, n)
+	for i := 1; i <= n; i++ {
+		for j := i + 1; j <= n; j++ {
+			tmp := j - i
+			tmp = min(abs(j-y)+1+abs(x-i), tmp)
+			tmp = min(abs(j-x)+1+abs(y-i), tmp)
+			rst[tmp-1] = rst[tmp-1] + 2
+		}
 	}
-	if n == 1 {
-		return int64(m / 2)
+	return rst
+}
+
+func minimumPushes(word string) int {
+	var cnt []int = make([]int, 26)
+	for _, w := range word {
+		cnt[w-'0']++
 	}
-	if m == 1 {
-		return int64(n / 2)
+	sort.Ints(cnt)
+	var ans int
+	var k = 1
+	var w = 1
+	for i := len(cnt) - 1; i >= 0; i-- {
+		if cnt[i] <= 0 {
+			continue
+		}
+		ans += cnt[i] * w
+		k++
+		if k > 8 {
+			w++
+			k = 1
+		}
 	}
-	if n%2 == 0 && m%2 == 0 {
-		return int64((n / 2) * (m / 2) * 2)
-	}
-	if n%2 == 0 && m%2 != 0 {
-		return int64((n/2)*(m/2+1) + (n/2)*(m/2))
-	}
-	if n%2 != 0 && m%2 == 0 {
-		return int64((n/2+1)*(m/2) + (n/2)*(m/2))
-	}
-	return int64((n/2+1)*(m/2) + (n/2)*(m/2+1))
+	return ans
 }

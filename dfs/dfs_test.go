@@ -1,6 +1,8 @@
 package dfs
 
-import "testing"
+import (
+	"testing"
+)
 
 func Test_numIslands(t *testing.T) {
 }
@@ -27,4 +29,12 @@ func Test_maximumSubarraySum(t *testing.T) {
 
 func Test_maximumLength(t *testing.T) {
 	maximumLength([]int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024})
+}
+
+func Test_minimumPushes(t *testing.T) {
+	minimumPushes("xycdefghij")
+}
+
+func Test_countOfPairs(t *testing.T) {
+	countOfPairs(5, 2, 4)
 }
