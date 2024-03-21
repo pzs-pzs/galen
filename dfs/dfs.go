@@ -3,6 +3,7 @@ package dfs
 import (
 	"container/heap"
 	"math"
+	"math/bits"
 	"sort"
 	"strings"
 )
@@ -383,6 +384,159 @@ func minimumPushes(word string) int {
 		if k > 8 {
 			w++
 			k = 1
+		}
+	}
+	return ans
+}
+
+func maximumScore(nums []int, k int) int {
+
+	var left []int = make([]int, len(nums))
+	var st []int
+	for i := 0; i < len(nums); i++ {
+		for len(st) > 0 && nums[i] > nums[st[len(st)-1]] {
+			st = st[:len(st)-1]
+		}
+		if len(st) > 0 {
+			left[i] = st[len(st)-1]
+		} else {
+			left[i] = i
+		}
+		st = append(st, i)
+
+	}
+	var right []int = make([]int, len(nums))
+	st = nil
+	for i := len(nums) - 1; i >= 0; i-- {
+		for len(st) > 0 && nums[i] > nums[st[len(st)-1]] {
+			st = st[:len(st)-1]
+		}
+		if len(st) > 0 {
+			right[i] = st[len(st)-1]
+		} else {
+			right[i] = i
+		}
+		st = append(st, i)
+	}
+	var ans int
+	for i, num := range nums {
+		l, r := left[i], right[i]
+		if r == -1 {
+
+		}
+		if l <= k && r >= k {
+			ans = max((r-l+1)*num, ans)
+		}
+	}
+	return ans
+}
+
+func minNonZeroProduct(p int) int {
+	if p == 1 {
+		return 1
+	}
+	n := 1<<p - 1
+	var ans = 1
+	for i := 1; i <= n/2; i++ {
+		ans = ans * (n - 1) % (1_000_000_007)
+	}
+
+	return (ans * n) % 1_000_000_007
+}
+
+const mod = 1_000_000_007
+
+func pow(x, p int) int {
+	res := 1
+	for x %= mod; p > 0; p-- {
+		res = res * x % mod
+		x = x * x % mod
+	}
+	return res
+}
+
+func minimumCost(nums []int) int {
+	var ans = nums[0]
+	var tmp int = 100000
+	for i := 1; i < len(nums)-1; i++ {
+		for j := i + 1; j < len(nums); j++ {
+			tmp = min(tmp, nums[i]+nums[j])
+		}
+	}
+	return ans + tmp
+}
+
+func canSortArray(nums []int) bool {
+	for i := 0; i < len(nums); i++ {
+		for j := i + 1; j < len(nums); j++ {
+			if nums[j] < nums[i] {
+				if bits.OnesCount(uint(nums[i])) != bits.OnesCount(uint(nums[j])) {
+					return false
+				}
+			}
+		}
+	}
+	return true
+}
+
+func maxFrequencyElements(nums []int) int {
+	freq := make(map[int]int)
+	for _, num := range nums {
+		freq[num]++
+	}
+	var m int
+	for _, v := range freq {
+		m = max(m, v)
+	}
+	var ans int
+	for _, v := range freq {
+		if v == m {
+			ans += v
+		}
+	}
+	return ans
+}
+
+func hasTrailingZeros(nums []int) bool {
+	for i := 0; i < len(nums); i++ {
+		for j := i + 1; j < len(nums); j++ {
+			if (nums[i]|nums[j])&1 == 0 {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+type FrequencyTracker struct {
+	freq  map[int]int
+	exist map[int]int
+}
+
+func findSubstring(s string, words []string) []int {
+	l := len(words) * len(words[0])
+	sub := len(words[0])
+
+	var ans []int
+	for i := 0; i <= len(s)-l; i++ {
+		var visited = make(map[string]int)
+		for _, word := range words {
+			visited[word]++
+		}
+		for k := i; k < i+l; {
+			_, ok := visited[s[k:k+sub]]
+			if !ok {
+				break
+			}
+			if visited[s[k:k+sub]] == 1 {
+				delete(visited, s[k:k+sub])
+			} else {
+				visited[s[k:k+sub]]--
+			}
+			k = k + sub
+		}
+		if len(visited) == 0 {
+			ans = append(ans, i)
 		}
 	}
 	return ans

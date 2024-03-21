@@ -38,3 +38,20 @@ func Test_minimumPushes(t *testing.T) {
 func Test_countOfPairs(t *testing.T) {
 	countOfPairs(5, 2, 4)
 }
+
+func Test_minNonZeroProduct(t *testing.T) {
+	println(minNonZeroProduct(4))
+	pow(2, 6)
+}
+
+func Test_canSortArray(t *testing.T) {
+	canSortArray([]int{3, 16, 8, 4, 2})
+}
+
+func Test_hasTrailingZeros(t *testing.T) {
+	hasTrailingZeros([]int{1, 2, 3, 4, 5})
+}
+
+func Test_findSubstring(t *testing.T) {
+	findSubstring("wordgoodgoodgoodbestword", []string{"word", "good", "best", "good"})
+}
